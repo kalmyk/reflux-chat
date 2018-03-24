@@ -1,3 +1,5 @@
+import * as Actions from './actions';
+
 var autobahn = require('autobahn');
 
 let connection = new autobahn.Connection({
@@ -60,7 +62,8 @@ export function postMessage(message, callback) {
 };
 
 function onEvent(publishArgs, kwargs, opts) {
-   console.log('Event', opts.topic, 'received args', publishArgs, 'kwargs ',kwargs);
+//   console.log('Event', opts.topic, 'received args', publishArgs, 'kwargs ',kwargs);
+   Actions.messageArrived(kwargs.message);
 }
 
 connection.onopen = function (newSession, details) {

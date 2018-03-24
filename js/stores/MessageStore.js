@@ -7,7 +7,7 @@ let MessageStore = Reflux.createStore({
 
   init() {
     this.listenTo(Actions.loadRawMessages.completed, this.loadedRawMessages);
-    this.listenTo(Actions.createMessage.formattedMessage, this.messageCreated);
+    this.listenTo(Actions.messageArrived, this.messageCreated);
     this.listenTo(Actions.createMessage.completed, this.receiveNewMessage);
     this.listenTo(Actions.clickThread, this.changeThread);
   },
@@ -23,7 +23,7 @@ let MessageStore = Reflux.createStore({
   },
 
   messageCreated(message) {
-    this._messages.push(message);
+    this._messages.push(ChatMessageUtils.convertRawMessage(message));
     this.triggerEvent();
   },
 

@@ -19,16 +19,13 @@ export let clickThread = Reflux.createAction();
 export let messageArrived = Reflux.createAction();
 
 export let createMessage = Reflux.createAction({
-  asyncResult: true,
-  children: ['formattedMessage']
+  asyncResult: true
 });
 
 createMessage.listen(function (text, currentThreadID) {
   let message = ChatMessageUtils.getCreatedMessageData(text, currentThreadID);
-  this.formattedMessage(message);
   loadingStarted();
   ChatDataServer.postMessage(message, rawMessage => {
-    this.completed({ rawMessage, tempMessageID: message.id });
     loadingFinished();
   });
 });
