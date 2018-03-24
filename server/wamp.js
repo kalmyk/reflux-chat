@@ -1,9 +1,15 @@
-/**
- * This file contains mock methods for fetching data from server.
- * It uses setTimeout to simulate server latency.
- */
+var WampRouter = require('fox-wamp');
+var program = require('commander');
 
-let NETWORK_LATENCY = 100;
+program
+  .option('-p, --port <port>', 'Server IP port', 9000)
+  .parse(process.argv);
+
+console.log('Listening port:', program.port);
+
+var app = new WampRouter(
+    {port: program.port}
+);
 
 let messages = [
   {
@@ -64,37 +70,16 @@ let messages = [
   }
 ];
 
-let threadNameMap = (function () {
-  let map = {};
-  messages.forEach(({threadID, threadName}) => {
-    map[threadID] = threadName;
-  });
-  return map;
-})();
+app.getRealm('realm1', function (realm) {
+    var api = realm.api();
 
-export function getMessages(callback) {
-  setTimeout(() => {
-    callback(messages);
-  }, NETWORK_LATENCY);
-};
+    api.regrpc('chat.getMessages', function(id, args, kwargs) {
+        api.resrpc(id, null /* no error */, messages);
+    });
 
-export function postMessage(message, callback) {
-  let timestamp = Date.now();
-  let id = 'm_' + timestamp;
-  let threadID = message.threadID;
-
-  let createdMessage = {
-    id,
-    threadID,
-    threadName: threadNameMap[threadID],
-    authorName: message.authorName,
-    text: message.text,
-    timestamp
-  };
-
-  messages.push(createdMessage);
-
-  setTimeout(() => {
-    callback(createdMessage);
-  }, NETWORK_LATENCY);
-};
+    api.regrpc('chat.postMessage', function(id, args, kwargs) {
+        messages.push(kwargs.message);
+        api.resrpc(id, null /* no error */, [], kwargs);
+        api.publish('chat.messages', [], {message:kwargs.message});
+    });
+});

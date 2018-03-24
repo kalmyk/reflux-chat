@@ -1,5 +1,5 @@
 import Reflux from 'reflux';
-import groupBy from 'lodash/collection/groupBy';
+import collection from 'lodash/collection';
 import MessageStore from './MessageStore';
 
 let ThreadStore = Reflux.createStore({
@@ -9,7 +9,7 @@ let ThreadStore = Reflux.createStore({
   },
 
   messagesChanged(messages) {
-    let threads = groupBy(messages, 'threadID');
+    let threads = collection.groupBy(messages, 'threadID');
     Object.keys(threads).forEach(threadID => {
       let messages = threads[threadID];
       let threadName = messages[0].threadName;

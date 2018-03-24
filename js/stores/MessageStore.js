@@ -1,6 +1,5 @@
 import Reflux from 'reflux';
-import remove from 'lodash/array/remove';
-import last from 'lodash/array/last';
+import array from 'lodash/array';
 import * as ChatMessageUtils from '../utils/ChatMessageUtils';
 import * as Actions from '../actions';
 
@@ -14,10 +13,10 @@ let MessageStore = Reflux.createStore({
   },
 
   loadedRawMessages(messages) {
-    let lastThreadID = last(messages).threadID;
+    let lastThread = array.last(messages);
     this._messages = messages.map(m => {
       let message = ChatMessageUtils.convertRawMessage(m);
-      message.isRead = message.threadID === lastThreadID ? true : false;
+      message.isRead = message.threadID === lastThread.threadID ? true : false;
       return message;
     });
     this.triggerEvent();
@@ -29,7 +28,7 @@ let MessageStore = Reflux.createStore({
   },
 
   receiveNewMessage({rawMessage, tempMessageID}) {
-    remove(this._messages, m => m.id === tempMessageID);
+    array.remove(this._messages, m => m.id === tempMessageID);
     let message = ChatMessageUtils.convertRawMessage(rawMessage);
     message.isRead = true;
     this._messages.push(message);

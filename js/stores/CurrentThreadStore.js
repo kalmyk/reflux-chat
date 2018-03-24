@@ -1,6 +1,5 @@
 import Reflux from 'reflux';
-import groupBy from 'lodash/collection/groupBy';
-import last from 'lodash/array/last';
+import array from 'lodash/array';
 import * as Actions from '../actions';
 
 let CurrentThreadStore = Reflux.createStore({
@@ -11,7 +10,9 @@ let CurrentThreadStore = Reflux.createStore({
   },
 
   gotRawMessages(rawMessages) {
-    this.trigger(last(rawMessages).threadID);
+    let msg = array.last(rawMessages);
+    if (msg)
+      this.trigger(msg.threadID);
   },
 
   changeThread(threadID) {

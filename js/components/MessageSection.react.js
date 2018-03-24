@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import MessageComposer from './MessageComposer.react';
 import MessageListItem from './MessageListItem.react';
 import CurrentMessageStore from '../stores/CurrentMessageStore';
@@ -51,7 +52,7 @@ export default class MessageSection extends React.Component {
 
   _scrollToBottom() {
     if (this.refs.messageList) {
-      let ul = this.refs.messageList.getDOMNode();
+      let ul = ReactDOM.findDOMNode(this.refs.messageList);
       ul.scrollTop = ul.scrollHeight;
     }
   }

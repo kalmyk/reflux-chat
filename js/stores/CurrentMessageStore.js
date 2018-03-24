@@ -1,5 +1,4 @@
 import Reflux from 'reflux';
-import groupBy from 'lodash/collection/groupBy';
 import ThreadStore from './ThreadStore';
 import CurrentThreadStore from './CurrentThreadStore';
 

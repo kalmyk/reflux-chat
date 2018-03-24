@@ -1,5 +1,5 @@
 import Reflux from 'reflux';
-import last from 'lodash/array/last';
+import array from 'lodash/array';
 import ThreadStore from './ThreadStore';
 
 let UnreadCountStore = Reflux.createStore({
@@ -10,7 +10,7 @@ let UnreadCountStore = Reflux.createStore({
 
   onThreadChange(threads) {
     this.trigger(Object.keys(threads).reduce((count, threadID) => {
-      return count + (last(threads[threadID]).isRead ? 0 : 1);
+      return count + (array.last(threads[threadID]).isRead ? 0 : 1);
     }, 0));
   },
 

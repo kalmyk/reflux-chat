@@ -1,6 +1,7 @@
 import React from 'react';
-import last from 'lodash/array/last';
+import array from 'lodash/array';
 import ThreadListItem from '../components/ThreadListItem.react';
+import MessageSending from '../components/MessageSending.react';
 import ThreadStore from '../stores/ThreadStore';
 import CurrentThreadStore from '../stores/CurrentThreadStore';
 import UnreadCountStore from '../stores/UnreadCountStore';
@@ -34,7 +35,7 @@ export default class ThreadSection extends React.Component {
       return (
         <ThreadListItem
           key={threadID}
-          lastMessage={last(messages)}
+          lastMessage={array.last(messages)}
           currentThreadID={this.state.currentThreadID}
         />
       );
@@ -44,6 +45,7 @@ export default class ThreadSection extends React.Component {
       this.state.unreadCount === 0 ?
       null :
       <span>Unread threads: {this.state.unreadCount}</span>;
+
     return (
       <div className="thread-section">
         <div className="thread-count">
@@ -51,7 +53,8 @@ export default class ThreadSection extends React.Component {
         </div>
         <ul className="thread-list">
           {threadListItems}
-          </ul>
+        </ul>
+        <MessageSending />
       </div>
     );
   }
