@@ -1,8 +1,9 @@
 import React from 'react';
+import Reflux from 'reflux';
 import ReactDOM from 'react-dom';
 import MessageComposer from './MessageComposer.react';
 import MessageListItem from './MessageListItem.react';
-import CurrentMessageStore from '../stores/CurrentMessageStore';
+import MessageStore from '../stores/MessageStore';
 
 function getMessageListItem(message) {
   return (
@@ -13,37 +14,34 @@ function getMessageListItem(message) {
   );
 }
 
-export default class MessageSection extends React.Component {
+export default class MessageSection extends Reflux.Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
-  }
-
-  componentDidMount() {
-    this.unsubscribe = CurrentMessageStore.listen(this._onChange.bind(this));
-    this._scrollToBottom();
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe();
+    this.store = MessageStore;
+    this.storeKeys = ['currentThreadName', 'currentThreadID', 'threads'];
   }
 
   render() {
-    if (this.state.messages) {
-      let messageListItems = this.state.messages.map(getMessageListItem);
-      return (
-        <div className="message-section">
-          <h3 className="message-thread-heading">{this.state.messages[0].threadName}</h3>
-          <ul className="message-list" ref="messageList">
-            {messageListItems}
-          </ul>
-          <MessageComposer threadID={this.state.messages[0].threadID}/>
-        </div>
-      );
-    } else {
-      return <div className="message-section"></div>;
-    }
+    let messageListItems =
+      (this.state.currentThreadID && this.state.threads[this.state.currentThreadID]) ?
+      this.state.threads[this.state.currentThreadID].map(getMessageListItem) :
+      null;
+
+    let composer =
+      this.state.currentThreadID ?
+      <MessageComposer threadId={this.state.currentThreadID} threadName={this.state.currentThreadName} /> :
+      null;
+
+    return (
+      <div className="message-section">
+        <h3 className="message-thread-heading">{this.state.currentThreadName}</h3>
+        <ul className="message-list" ref="messageList">
+          {messageListItems}
+        </ul>
+        {composer}
+      </div>
+    );
   }
 
   componentDidUpdate() {
@@ -55,13 +53,6 @@ export default class MessageSection extends React.Component {
       let ul = ReactDOM.findDOMNode(this.refs.messageList);
       ul.scrollTop = ul.scrollHeight;
     }
-  }
-
-  /**
-   * Event handler for 'change' events coming from the MessageStore
-   */
-  _onChange(messages) {
-    this.setState({ messages });
   }
 
 };

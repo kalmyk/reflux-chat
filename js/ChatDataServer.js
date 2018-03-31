@@ -11,14 +11,6 @@ let connection = new autobahn.Connection({
 let session = null;
 let crp = null;
 
-let threadNameMap = (function () {
-  let map = {};
-//  messages.forEach(({threadID, threadName}) => {
-//    map[threadID] = threadName;
-//  });
-  return map;
-})();
-
 export function openConnection() {
   return new Promise((resolve, reject) => {
     crp = resolve;
@@ -30,7 +22,6 @@ export function getMessages(callback) {
   session.call('chat.getMessages').then(
      function (messages) {
        callback(messages.args);
-       session.log('chat.getMessages', messages);
      },
      function (error) {
         console.log("Call failed:", error);
@@ -45,7 +36,7 @@ export function postMessage(message, callback) {
   let createdMessage = {
     id,
     threadID,
-    threadName: threadNameMap[threadID],
+    threadName: message.threadName,
     authorName: message.authorName,
     text: message.text,
     timestamp
@@ -54,7 +45,6 @@ export function postMessage(message, callback) {
   session.call('chat.postMessage', [], {message:createdMessage}).then(
      function (message) {
        callback(message);
-       session.log('chat.postMessage', message);
      },
      function (error) {
         console.log("Call failed:", error);

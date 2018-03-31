@@ -1,32 +1,39 @@
 import React from 'react';
+import Reflux from 'reflux';
 import array from 'lodash/array';
 import ThreadListItem from '../components/ThreadListItem.react';
 import MessageSending from '../components/MessageSending.react';
-import ThreadStore from '../stores/ThreadStore';
-import CurrentThreadStore from '../stores/CurrentThreadStore';
-import UnreadCountStore from '../stores/UnreadCountStore';
+import MessageStore from '../stores/MessageStore';
 
-export default class ThreadSection extends React.Component {
+class UnreadSection extends Reflux.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      threads: {},
-      currentThreadID: null,
-      unreadCount: 0
-    };
+    this.store = MessageStore;
+    this.storeKeys = ['unreadCount'];
   }
 
-  componentDidMount() {
-    this.unsubscribe1 = ThreadStore.listen(this._onChangeThread.bind(this));
-    this.unsubscribe2 = CurrentThreadStore.listen(this._onChangeCurrentThread.bind(this));
-    this.unsubscribe3 = UnreadCountStore.listen(this._onChangeUnreadCount.bind(this));
-  }
+  render() {
 
-  componentWillUnmount() {
-    this.unsubscribe1();
-    this.unsubscribe2();
-    this.unsubscribe3();
+    let unread =
+      this.state.unreadCount === 0 ?
+      null :
+      <span>Unread threads: {this.state.unreadCount}</span>;
+
+    return (
+      <div className="thread-count">
+        {unread}
+      </div>
+    );
+  }
+}
+
+export default class ThreadSection extends Reflux.Component {
+
+  constructor(props) {
+    super(props);
+    this.store = MessageStore;
+    this.storeKeys = ['threads', 'currentThreadID'];
   }
 
   render() {
@@ -41,34 +48,15 @@ export default class ThreadSection extends React.Component {
       );
     });
 
-    let unread =
-      this.state.unreadCount === 0 ?
-      null :
-      <span>Unread threads: {this.state.unreadCount}</span>;
-
     return (
       <div className="thread-section">
-        <div className="thread-count">
-          {unread}
-        </div>
+        <UnreadSection />
         <ul className="thread-list">
           {threadListItems}
         </ul>
         <MessageSending />
       </div>
     );
-  }
-
-  _onChangeThread(threads) {
-    this.setState({ threads });
-  }
-
-  _onChangeCurrentThread(currentThreadID) {
-    this.setState({ currentThreadID });
-  }
-
-  _onChangeUnreadCount(unreadCount) {
-    this.setState({ unreadCount });
   }
 
 };

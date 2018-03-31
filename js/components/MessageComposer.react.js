@@ -32,7 +32,7 @@ class MessageComposer extends React.Component {
       event.preventDefault();
       let text = this.state.text.trim();
       if (text) {
-        Actions.createMessage(text, this.props.threadID);
+        Actions.createMessage(text, this.props.threadId, this.props.threadName);
       }
       this.setState({text: ''});
     }
@@ -41,7 +41,8 @@ class MessageComposer extends React.Component {
 };
 
 MessageComposer.propTypes = {
-  threadID: PropTypes.string.isRequired
+  threadId: PropTypes.string.isRequired,
+  threadName: PropTypes.string.isRequired
 };
 
 export default MessageComposer;

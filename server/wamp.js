@@ -55,7 +55,7 @@ let messages = [
   {
     id: 'm_6',
     threadID: 't_3',
-    threadName: 'Functional Heads',
+    threadName: 'Bill and Brian',
     authorName: 'Bill',
     text: 'Hey Brian, are you going to be talking about functional stuff?',
     timestamp: Date.now() - 49999
@@ -80,6 +80,7 @@ app.getRealm('realm1', function (realm) {
     api.regrpc('chat.postMessage', function(id, args, kwargs) {
         messages.push(kwargs.message);
         api.resrpc(id, null /* no error */, [], kwargs);
+        console.log('msg', kwargs);
         api.publish('chat.messages', [], {message:kwargs.message});
     });
 });

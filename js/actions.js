@@ -22,8 +22,8 @@ export let createMessage = Reflux.createAction({
   asyncResult: true
 });
 
-createMessage.listen(function (text, currentThreadID) {
-  let message = ChatMessageUtils.getCreatedMessageData(text, currentThreadID);
+createMessage.listen(function (text, threadId, threadName) {
+  let message = ChatMessageUtils.getCreatedMessageData(text, threadId, threadName);
   loadingStarted();
   ChatDataServer.postMessage(message, rawMessage => {
     loadingFinished();

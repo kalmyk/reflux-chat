@@ -1,6 +1,6 @@
 import React from 'react';
 import Reflux from 'reflux';
-import MessageSendingStore from '../stores/MessageSendingStore';
+import MessageStore from '../stores/MessageStore';
 
 export default class MessageSending extends Reflux.Component
 {
@@ -8,7 +8,7 @@ export default class MessageSending extends Reflux.Component
   constructor(props)
 	{
 		super(props);
-		this.store = MessageSendingStore;
+		this.store = MessageStore;
     this.storeKeys = ['messageSending'];
 	}
 
