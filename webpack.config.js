@@ -9,8 +9,8 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /\.js?$/,
-        exclude: /(node_modules|bower_components)/,
+        test: /\.js$/,
+        exclude: /node_modules/,
         loader: 'babel'
       },
       { test: /autobahn\/package.json$/, loader: 'json-loader'}

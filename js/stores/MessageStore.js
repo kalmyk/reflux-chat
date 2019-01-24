@@ -57,7 +57,6 @@ export default class MessageSendingStore extends Reflux.Store
     }
 
     this.setState({
-      unreadCount: unreadCount,
       currentThreadID: threadId,
       currentThreadName: msgs[0].threadName,
       unreadCount: this.calcUnreadCount(this.state.threads)

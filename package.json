@@ -6,14 +6,14 @@
   "author": "Daiwei Lu",
   "main": "js/app.js",
   "dependencies": {
+    "autobahn": "*",
     "classnames": "*",
+    "fox-wamp": "^0.5.7",
     "lodash": "*",
+    "prop-types": "^15.0.2",
     "react": "^15.0.2",
     "react-dom": "^15.0.2",
-    "prop-types": "^15.0.2",
-    "reflux": "^6.4.1",
-    "autobahn": "*",
-    "fox-wamp": "*"
+    "reflux": "^6.4.1"
   },
   "devDependencies": {
     "babel-core": "^5.8.24",

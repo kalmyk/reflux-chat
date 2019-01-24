@@ -16,7 +16,7 @@ export function openConnection() {
     crp = resolve;
     connection.open();
   });
-};
+}
 
 export function getMessages(callback) {
   session.call('chat.getMessages').then(
@@ -26,7 +26,7 @@ export function getMessages(callback) {
      function (error) {
         console.log("Call failed:", error);
      });
-};
+}
 
 export function postMessage(message, callback) {
   let timestamp = Date.now();
@@ -49,7 +49,7 @@ export function postMessage(message, callback) {
      function (error) {
         console.log("Call failed:", error);
      });
-};
+}
 
 function onEvent(publishArgs, kwargs, opts) {
 //   console.log('Event', opts.topic, 'received args', publishArgs, 'kwargs ',kwargs);

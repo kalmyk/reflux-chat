@@ -7,9 +7,8 @@ program
 
 console.log('Listening port:', program.port);
 
-var app = new WampRouter(
-    {port: program.port}
-);
+var app = new WampRouter();
+app.setLogTrace(true);
 
 let messages = [
   {
@@ -84,3 +83,5 @@ app.getRealm('realm1', function (realm) {
         api.publish('chat.messages', [], {message:kwargs.message});
     });
 });
+
+app.listenWAMP({port: program.port});
