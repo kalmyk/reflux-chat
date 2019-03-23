@@ -13,7 +13,7 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'babel'
       },
-      { test: /autobahn\/package.json$/, loader: 'json-loader'}
+      { test: /autobahn\/package.json$/, loader: 'json-loader' }
     ]
   }
 };

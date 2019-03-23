@@ -1,9 +1,9 @@
-var WampRouter = require('fox-wamp');
-var program = require('commander');
+var WampRouter = require('fox-wamp')
+var program = require('commander')
 
 program
   .option('-p, --port <port>', 'Server IP port', 9000)
-  .parse(process.argv);
+  .parse(process.argv)
 
 console.log('Listening port:', program.port);
 
@@ -70,18 +70,16 @@ let messages = [
 ];
 
 app.getRealm('realm1', function (realm) {
-    var api = realm.api();
+  var api = realm.wampApi()
 
-    api.regrpc('chat.getMessages', function(id, args, kwargs) {
-        api.resrpc(id, null /* no error */, messages);
-    });
+  api.register('chat.getMessages', function (id, args, kwargs) {
+    api.resrpc(id, null /* no error */, messages)
+  })
 
-    api.regrpc('chat.postMessage', function(id, args, kwargs) {
-        messages.push(kwargs.message);
-        api.resrpc(id, null /* no error */, [], kwargs);
-        console.log('msg', kwargs);
-        api.publish('chat.messages', [], {message:kwargs.message});
-    });
-});
+  api.subscribe('chat.messages', (qid, args, kwargs) => {
+    messages.push(kwargs.message)
+    console.log('EVENT', kwargs)
+  })
+})
 
-app.listenWAMP({port: program.port});
+app.listenWAMP({ port: program.port })

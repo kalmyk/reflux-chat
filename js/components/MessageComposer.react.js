@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import * as Actions from '../actions';
+import React from 'react'
+import PropTypes from 'prop-types'
+import * as Actions from '../actions'
 
-let ENTER_KEY_CODE = 13;
+let ENTER_KEY_CODE = 13
 
 class MessageComposer extends React.Component {
 

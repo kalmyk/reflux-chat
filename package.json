@@ -1,6 +1,6 @@
 {
   "name": "reflux-chat",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Example Flux chat application with Reflux",
   "repository": "https://github.com/d6u/reflux-chat.git",
   "author": "Daiwei Lu",
@@ -8,9 +8,9 @@
   "dependencies": {
     "autobahn": "*",
     "classnames": "*",
-    "fox-wamp": "^0.5.7",
+    "fox-wamp": "^0.5.12",
     "lodash": "*",
-    "prop-types": "^15.0.2",
+    "prop-types": "^15.7.2",
     "react": "^15.0.2",
     "react-dom": "^15.0.2",
     "reflux": "^6.4.1"
